@@ -6,7 +6,8 @@ const nav = [
     {link:'/home',name:'Home'},
     {link:'/books',name:'Books'},
     {link:'/authors',name:'Authors'},
-    {link:'/addnew',name:'Add New Item'}
+    {link:'/admin',name:'Add New Book'},
+    // {link:'/addAuthor',name:'Add New Author'}
 ];
 
 const homepage ={link:'/home',name:'Home'};
@@ -17,7 +18,8 @@ const booksRouter = require('./src/routes/bookRoutes')(nav);
 const authorsRouter = require('./src/routes/authorsRoutes')(nav);
 const homeRouter = require('./src/routes/homeRoutes')(nav);
 const signupRouter = require('./src/routes/signupRoutes');
-const addNewRouter = require('./src/routes/addNewRoutes')(nav);
+const addNewRouter = require('./src/routes/addBookRoutes')(nav);
+const updateBookRouter = require('./src/routes/updateBook')(nav);
 
 
 app.use(express.static('./public')); //for enabling the use of static files
@@ -25,11 +27,13 @@ app.use(express.static('./public')); //for enabling the use of static files
 app.set('view engine','ejs');  //  setting the view engine as ejs
 app.set('views',__dirname + '/src/views');  //settiing initial path
 
+app.use(express.urlencoded({extended:true})); //POST request with the help of middleware
 app.use('/books',booksRouter);   //Using booksRouter
 app.use('/authors',authorsRouter); //Using authorsRouter
 app.use('/home',homeRouter);
 app.use('/signup',signupRouter);
-app.use('/addnew',addNewRouter);
+app.use('/admin',addNewRouter);
+app.use('/updateBook', updateBookRouter);
 
 
 app.get('/',function(req,res){  
